@@ -3,9 +3,9 @@ import os
 import random
 
 import discord
-# from dotenv import load_dotenv
+from dotenv import load_dotenv
 
-# load_dotenv()
+load_dotenv()
 
 from vertexai.preview.language_models import ChatModel, InputOutputTextPair
 import argparse
@@ -27,6 +27,7 @@ chat = chat_model.start_chat()
 
 TOKEN = os.getenv('DISCORD_TOKEN')
 
+
 intents = discord.Intents.default()
 intents.message_content = True
 client = discord.Client(intents=intents)
@@ -36,7 +37,7 @@ client = discord.Client(intents=intents)
 async def on_message(message):
     if message.author == client.user:
         return
-    
+    response = ""
     # if message.content == 'what is your name':
     if message.content.startswith("!"):
         # response = random.choice(brooklyn_99_quotes)
@@ -44,6 +45,7 @@ async def on_message(message):
             message.content[1:], **parameters
         )
         print(message.content)
-    await message.channel.send(response)
+    if response:
+        await message.channel.send(response)
 
 client.run(TOKEN)
