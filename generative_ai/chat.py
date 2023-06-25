@@ -15,7 +15,10 @@
 # [START aiplatform_sdk_chat]
 from vertexai.preview.language_models import ChatModel, InputOutputTextPair
 import argparse
+from dotenv import load_dotenv
+import os
 
+load_dotenv()
 
 def science_tutoring(args, temperature: float = 0.2) -> None:
     chat_model = ChatModel.from_pretrained("chat-bison@001")
@@ -32,22 +35,22 @@ def science_tutoring(args, temperature: float = 0.2) -> None:
         "top_k": 40,
     }
 
-    # chat = chat_model.start_chat(
-    #     context="My name is Miles. You are an astronomer, knowledgeable about the solar system.",
-    #     examples=[
-    #         InputOutputTextPair(
-    #             input_text="How many moons does Mars have?",
-    #             output_text="The planet Mars has two moons, Phobos and Deimos.",
-    #         ),
-    #     ],
-    # )
-    chat = chat_model.start_chat()
-    # response = chat.send_message(
-    #     "How many planets are there in the solar system?", **parameters
-    # )
-    response = chat.send_message(
-        args.query, **parameters
+    chat = chat_model.start_chat(
+        context="My name is Miles. You are an astronomer, knowledgeable about the solar system.",
+        examples=[
+            InputOutputTextPair(
+                input_text="How many moons does Mars have?",
+                output_text="The planet Mars has two moons, Phobos and Deimos.",
+            ),
+        ],
     )
+    # chat = chat_model.start_chat()
+    response = chat.send_message(
+        "How many planets are there in the solar system?", **parameters
+    )
+    # response = chat.send_message(
+    #     args.query, **parameters
+    # )
     print(f"Response from Model: {response.text}")
     # [END aiplatform_sdk_chat]
 
